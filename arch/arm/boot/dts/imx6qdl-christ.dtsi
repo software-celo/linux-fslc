@@ -156,6 +156,18 @@
 	phy-mode = "rgmii";
 	phy-reset-gpios = <&gpio1 25 0>;
 	fsl,magic-packet;
+	txen-skew-ps = <0>;
+	txc-skew-ps = <1680>;
+	rxdv-skew-ps = <0>;
+	rxc-skew-ps = <1680>;
+	rxd0-skew-ps = <0>;
+	rxd1-skew-ps = <0>;
+	rxd2-skew-ps = <0>;
+	rxd3-skew-ps = <0>;
+	txd0-skew-ps = <0>;
+	txd1-skew-ps = <0>;
+	txd2-skew-ps = <0>;
+	txd3-skew-ps = <0>;
 	status = "okay";
 };
 
@@ -493,5 +505,9 @@
 };
 
 &wdog1 {
-	status = "disabled";
+	status = "okay";
+};
+
+&wdog2 {
+        status = "disabled";
 };
