@@ -35,6 +35,9 @@
 
 #define	PHY_MODE_RTL8211CL	0x000C
 
+static int g_usr_mac = 0;
+static char g_mac_addr[ETH_ALEN];
+
 struct ax88172_int_data {
 	__le16 res1;
 	u8 link;
@@ -42,6 +45,40 @@ struct ax88172_int_data {
 	u8 status;
 	__le16 res3;
 } __packed;
+
+/* Retrieve user set MAC address */
+static int __init setup_asix_mac(char *macstr)
+{
+	int i, j;
+	unsigned char result, value;
+
+	for (i = 0; i < ETH_ALEN; i++) {
+		result = 0;
+
+		if (i != 5 && *(macstr + 2) != ':')
+			return -1;
+
+		for (j = 0; j < 2; j++) {
+			if (isxdigit(*macstr)
+				&& (value =
+				isdigit(*macstr) ? *macstr -
+				'0' : toupper(*macstr) - 'A' + 10) < 16) {
+				result = result * 16 + value;
+				macstr++;
+			} else
+				return -1;
+		}
+
+		macstr++;
+		g_mac_addr[i] = result;
+	}
+
+	g_usr_mac = 1;
+
+	return 0;
+}
+
+__setup("asix_mac=", setup_asix_mac);
 
 static void asix_status(struct usbnet *dev, struct urb *urb)
 {
@@ -419,6 +456,7 @@ static int ax88772_bind(struct usbnet *dev, struct usb_interface *intf)
 {
 	int ret, embd_phy, i;
 	u8 buf[ETH_ALEN];
+	u8 default_mac[6] = {0x00,0x0e,0xc6,0x87,0x72,0x01};
 	u32 phyid;
 
 	usbnet_get_endpoints(dev,intf);
@@ -434,6 +472,16 @@ static int ax88772_bind(struct usbnet *dev, struct usb_interface *intf)
 	} else {
 		ret = asix_read_cmd(dev, AX_CMD_READ_NODE_ID,
 				0, 0, ETH_ALEN, buf);
+	}
+
+	if (0 == memcmp(buf, default_mac, 6)) {
+		/* the user provided asix MAC can only be used once if it is available */
+		if (1 == g_usr_mac) {
+			memcpy(buf, g_mac_addr, ETH_ALEN);
+			g_usr_mac++;
+		} else {
+			netdev_dbg(dev->net, "No MAC address available - using default: %02x:%02x:%02x:%02x:%02x:%02x\n", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5]);
+		}
 	}
 
 	if (ret < 0) {
@@ -487,6 +535,10 @@ static int ax88772_bind(struct usbnet *dev, struct usb_interface *intf)
 
 static void ax88772_unbind(struct usbnet *dev, struct usb_interface *intf)
 {
+	if (!memcmp(dev->net->dev_addr, g_mac_addr, ETH_ALEN)) {
+		/* Release user set MAC address */
+		g_usr_mac--;
+	}
 	kfree(dev->driver_priv);
 }
 
