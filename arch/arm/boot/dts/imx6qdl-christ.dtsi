@@ -51,6 +51,14 @@
 			/* vin-supply = <&swbst_reg>; */
 			/* regulator-always-on; */
 		};
+
+		reg_3v3: regulator@2 {
+			compatible = "regulator-fixed";
+			regulator-name = "3P3V";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			regulator-always-on;
+		};
 	};
 
 	mxcfb1: fb@0 {
@@ -488,7 +496,10 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc2>;
 	bus-width = <4>;
-	cd-gpios = <&gpio2 2 0>;
+	cd-gpios = <&gpio2 2 GPIO_ACTIVE_LOW>;
+	vmmc-supply = <&reg_3v3>;
+	vqmmc-supply = <&reg_3v3>;
+	no-1-8-v;
 	status = "okay";
 };
 
@@ -496,6 +507,8 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc4>;
 	bus-width = <8>;
+	vmmc-supply = <&reg_3v3>;
+	vqmmc-supply = <&reg_3v3>;
 	non-removable;
 	no-1-8-v;
 	keep-power-in-suspend;
