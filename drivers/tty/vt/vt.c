@@ -1093,9 +1093,10 @@ int vc_allocate(unsigned int currcons)	/* return 0 on success */
 		goto err_free;
 
 	/* If no drivers have overridden us and the user didn't pass a
-	   boot option, default to displaying the cursor */
+	 * boot option, default to NOT displaying the cursor
+	 */
 	if (global_cursor_default == -1)
-		global_cursor_default = 1;
+		global_cursor_default = 0;
 
 	vc_init(vc, vc->vc_rows, vc->vc_cols, 1);
 	vcs_make_sysfs(currcons);
