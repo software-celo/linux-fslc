@@ -15,7 +15,7 @@
 /dts-v1/;
 
 #include "imx6q.dtsi"
-#include "imx6qdl-christ.dtsi"
+#include "imx6qdl-crix.dtsi"
 
 / {
 	model = "Christ i.MX6 Quad CRIX Board";
