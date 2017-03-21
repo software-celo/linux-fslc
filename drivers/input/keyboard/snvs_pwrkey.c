@@ -44,21 +44,37 @@ static void imx_imx_snvs_check_for_events(struct timer_list *t)
 	struct input_dev *input = pdata->input;
 	u32 state;
 
-	regmap_read(pdata->snvs, SNVS_HPSR_REG, &state);
-	state = state & SNVS_HPSR_BTN ? 1 : 0;
-
-	/* only report new event if status changed */
-	if (state ^ pdata->keystate) {
-		pdata->keystate = state;
+	/* On imx6q/dl this does not work, as this function is only called
+	 * on button release. Take the fix from
+	 * https://community.nxp.com/thread/358898
+	 * and make it dependent on our board
+	 */
+	if ((of_machine_is_compatible("ces,imx6dl-pixi-cdlx") ||
+		of_machine_is_compatible("ces,imx6q-pixi-cqx"))) {
+		state = 1;
+		input_event(input, EV_KEY, pdata->keycode, state);
+		input_sync(input);
+		state = 0;
 		input_event(input, EV_KEY, pdata->keycode, state);
 		input_sync(input);
 		pm_relax(pdata->input->dev.parent);
-	}
+	} else {
+		regmap_read(pdata->snvs, SNVS_HPSR_REG, &state);
+		state = state & SNVS_HPSR_BTN ? 1 : 0;
 
-	/* repeat check if pressed long */
-	if (state) {
-		mod_timer(&pdata->check_timer,
-			  jiffies + msecs_to_jiffies(REPEAT_INTERVAL));
+		/* only report new event if status changed */
+		if (state ^ pdata->keystate) {
+			pdata->keystate = state;
+			input_event(input, EV_KEY, pdata->keycode, state);
+			input_sync(input);
+			pm_relax(pdata->input->dev.parent);
+		}
+
+		/* repeat check if pressed long */
+		if (state) {
+			mod_timer(&pdata->check_timer,
+				  jiffies + msecs_to_jiffies(REPEAT_INTERVAL));
+		}
 	}
 }
 
