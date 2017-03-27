@@ -63,7 +63,7 @@
 	mxcfb1: fb@0 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "ldb";
-		interface_pix_fmt = "RGB24";
+		interface_pix_fmt = "RGB666";
 		default_bpp = <32>;
 		int_clk = <0>;
 		late_init = <0>;
@@ -376,22 +376,22 @@
 
 	lvds-channel@0 {
 		fsl,data-mapping = "spwg";
-		fsl,data-width = <24>;
+		fsl,data-width = <18>;
 		status = "okay";
 		primary;
 
 		display-timings {
 			native-mode = <&timing0>;
-			timing0: LDB-WXGA {
-				clock-frequency = <68930000>;
-				hactive = <1280>;
-				vactive = <800>;
-				hback-porch = <64>;
-				hfront-porch = <64>;
-				vback-porch = <5>;
-				vfront-porch = <5>;
-				hsync-len = <40>;
-				vsync-len = <6>;
+			timing0: LDB-WVGA {
+				clock-frequency = <29500000>;
+				hactive = <800>;
+				vactive = <480>;
+				hback-porch = <24>;
+				hfront-porch = <96>;
+				vback-porch = <10>;
+				vfront-porch = <3>;
+				hsync-len = <72>;
+				vsync-len = <7>;
 				hsync-active = <0>;
 				vsync-active = <0>;
 				pixelclk-active = <0>;
