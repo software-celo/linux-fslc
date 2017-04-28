@@ -220,7 +220,7 @@
 &iomuxc {
 	pinctrl-names = "default";
 
-	imx6qdl-sabresd {
+	imx6qdl-crix {
 		pinctrl_ecspi1: ecspi1grp {
 			fsl,pins = <
 				MX6QDL_PAD_KEY_COL1__ECSPI1_MISO	0x100b1
@@ -384,6 +384,13 @@
 				MX6QDL_PAD_SD4_DAT7__SD4_DATA7		0x17059
 			>;
 		};
+
+		pinctrl_flexcan2: can2grp {
+			fsl,pins = <
+				MX6QDL_PAD_SD3_DAT0__FLEXCAN2_TX	0x1b0b0
+				MX6QDL_PAD_SD3_DAT1__FLEXCAN2_RX	0x1b0b0
+			>;
+		};
 	};
 };
 
@@ -449,6 +456,12 @@
 
 &ssi2 {
 	status = "disabled";
+};
+
+&can2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_flexcan2>;
+	status = "okay";
 };
 
 &uart1 {
