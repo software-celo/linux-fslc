@@ -213,10 +213,12 @@
 			};
 		};
 
-		pinctrl_bkl_on: gpio_bkl_on {
-			fsl,pins = <
-				MX6QDL_PAD_GPIO_17__GPIO7_IO12		0x130b0 /* PD */
-			>;
+		bkl {
+			pinctrl_bkl_on: gpio_bkl_on {
+				fsl,pins = <
+					MX6QDL_PAD_GPIO_17__GPIO7_IO12		0x130b0 /* PD */
+				>;
+			};
 		};
 
 		i2c1 {
