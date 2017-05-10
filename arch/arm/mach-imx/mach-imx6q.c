@@ -217,13 +217,11 @@ static void __init imx6q_1588_init(void)
 	 * (external OSC), and we need to clear the bit.
 	 */
 	gpr = syscon_regmap_lookup_by_compatible("fsl,imx6q-iomuxc-gpr");
-	if (!IS_ERR(gpr)) {
-		if (!(of_machine_is_compatible("ces,imx6dl-pixi") ||
-			of_machine_is_compatible("ces,imx6q-pixi")))
-			regmap_update_bits(gpr, IOMUXC_GPR1,
-					IMX6Q_GPR1_ENET_CLK_SEL_MASK,
-					IMX6Q_GPR1_ENET_CLK_SEL_ANATOP);
-	} else
+	if (!IS_ERR(gpr))
+		regmap_update_bits(gpr, IOMUXC_GPR1,
+				IMX6Q_GPR1_ENET_CLK_SEL_MASK,
+				IMX6Q_GPR1_ENET_CLK_SEL_ANATOP);
+	else
 		pr_err("failed to find fsl,imx6q-iomux-gpr regmap\n");
 
 	clk_put(ptp_clk);
