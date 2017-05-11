@@ -59,30 +59,43 @@ static int rotary_encoder_get_state(const struct rotary_encoder_platform_data *p
 static void rotary_encoder_report_event(struct rotary_encoder *encoder)
 {
 	const struct rotary_encoder_platform_data *pdata = encoder->pdata;
+	unsigned int type = pdata->type ?: EV_KEY;
 
-	if (pdata->relative_axis) {
-		input_report_rel(encoder->input,
-				 pdata->axis, encoder->dir ? -1 : 1);
-	} else {
-		unsigned int pos = encoder->pos;
-
+	if (pdata->noaxis) {
 		if (encoder->dir) {
-			/* turning counter-clockwise */
-			if (pdata->rollover)
-				pos += pdata->steps;
-			if (pos)
-				pos--;
+			/* counter-clockwise */
+			input_event(encoder->input, type, pdata->codeCCW, 1);
+			input_event(encoder->input, type, pdata->codeCCW, 0);
 		} else {
-			/* turning clockwise */
-			if (pdata->rollover || pos < pdata->steps)
-				pos++;
+			/* clockwise */
+			input_event(encoder->input, type, pdata->codeCW, 1);
+			input_event(encoder->input, type, pdata->codeCW, 0);
 		}
+	} else {
+		if (pdata->relative_axis) {
+			input_report_rel(encoder->input,
+					 pdata->axis, encoder->dir ? -1 : 1);
+		} else {
+			unsigned int pos = encoder->pos;
 
-		if (pdata->rollover)
-			pos %= pdata->steps;
+			if (encoder->dir) {
+				/* turning counter-clockwise */
+				if (pdata->rollover)
+					pos += pdata->steps;
+				if (pos)
+					pos--;
+			} else {
+				/* turning clockwise */
+				if (pdata->rollover || pos < pdata->steps)
+					pos++;
+			}
 
-		encoder->pos = pos;
-		input_report_abs(encoder->input, pdata->axis, encoder->pos);
+			if (pdata->rollover)
+				pos %= pdata->steps;
+
+			encoder->pos = pos;
+			input_report_abs(encoder->input, pdata->axis, encoder->pos);
+		}
 	}
 
 	input_sync(encoder->input);
@@ -180,6 +193,16 @@ static struct rotary_encoder_platform_data *rotary_encoder_parse_dt(struct devic
 					"rotary-encoder,rollover", NULL);
 	pdata->half_period = !!of_get_property(np,
 					"rotary-encoder,half-period", NULL);
+	pdata->noaxis = !!of_get_property(np,
+					"rotary-encoder,noaxis", NULL);
+	if (pdata->noaxis) {
+		if (of_property_read_u32(np, "rotary-encoder,codeCW", &pdata->codeCW))
+			pdata->codeCW = 28;
+		if (of_property_read_u32(np, "rotary-encoder,codeCCW", &pdata->codeCCW))
+			pdata->codeCCW = 28;
+		if (of_property_read_u32(np, "rotary-encoder,type", &pdata->type))
+			pdata->type = EV_KEY;
+	}
 
 	return pdata;
 }
@@ -225,13 +248,19 @@ static int rotary_encoder_probe(struct platform_device *pdev)
 	input->id.bustype = BUS_HOST;
 	input->dev.parent = dev;
 
-	if (pdata->relative_axis) {
-		input->evbit[0] = BIT_MASK(EV_REL);
-		input->relbit[0] = BIT_MASK(pdata->axis);
+	if (pdata->noaxis) {
+		input->evbit[0] = BIT_MASK(EV_KEY);
+		input_set_capability(input, pdata->type ?: EV_KEY, pdata->codeCW);
+		input_set_capability(input, pdata->type ?: EV_KEY, pdata->codeCCW);
 	} else {
-		input->evbit[0] = BIT_MASK(EV_ABS);
-		input_set_abs_params(encoder->input,
-				     pdata->axis, 0, pdata->steps, 0, 1);
+		if (pdata->relative_axis) {
+			input->evbit[0] = BIT_MASK(EV_REL);
+			input->relbit[0] = BIT_MASK(pdata->axis);
+		} else {
+			input->evbit[0] = BIT_MASK(EV_ABS);
+			input_set_abs_params(encoder->input,
+					     pdata->axis, 0, pdata->steps, 0, 1);
+		}
 	}
 
 	/* request the GPIOs */

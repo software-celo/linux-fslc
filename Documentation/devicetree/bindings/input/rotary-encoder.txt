@@ -6,15 +6,20 @@ Required properties:
 Optional properties:
 - linux,axis: the input subsystem axis to map to this rotary encoder.
   Defaults to 0 (ABS_X / REL_X)
+- rotary-encoder,noaxis: Report key events instead of axis events.
+  Event codes must be specified by codeCW and codeCCW
 - rotary-encoder,steps: Number of steps in a full turnaround of the
   encoder. Only relevant for absolute axis. Defaults to 24 which is a
   typical value for such devices.
 - rotary-encoder,relative-axis: register a relative axis rather than an
   absolute one. Relative axis will only generate +1/-1 events on the input
   device, hence no steps need to be passed.
-- rotary-encoder,rollover: Automatic rollove when the rotary value becomes
+- rotary-encoder,rollover: Automatic rollover when the rotary value becomes
   greater than the specified steps or smaller than 0. For absolute axis only.
 - rotary-encoder,half-period: Makes the driver work on half-period mode.
+- rotary-encoder,codeCW: Key code emitted for every step clockwise
+- rotary-encoder,codeCCW: Key code emitted on counter clockwise rotation per step.
+  Keycodes can be found at include/uapi/linux/input.h.
 
 See Documentation/input/rotary-encoder.txt for more information.
 
@@ -33,4 +38,12 @@ Example:
 			linux,axis = <1>; /* ABS_Y */
 			rotary-encoder,steps = <24>;
 			rotary-encoder,rollover;
+		};
+
+		rotary@2 {
+			compatible = "rotary-encoder";
+			gpios = <&gpio5 30 0>, <&gpio5 31 0>;
+			rotary-encoder,noaxis;
+			rotary-encoder,codeCCW = <108>; /* UP */
+			rotary-encoder,codeCW = <103>; /* DOWN */
 		};

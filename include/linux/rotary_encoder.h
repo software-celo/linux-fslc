@@ -11,6 +11,10 @@ struct rotary_encoder_platform_data {
 	bool relative_axis;
 	bool rollover;
 	bool half_period;
+	bool noaxis;
+	unsigned int type;
+	unsigned int codeCW;
+	unsigned int codeCCW;
 };
 
 #endif /* __ROTARY_ENCODER_H__ */
