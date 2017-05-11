@@ -6,6 +6,9 @@ Required properties:
 Optional properties:
 - linux,axis: the input subsystem axis to map to this rotary encoder.
   Defaults to 0 (ABS_X / REL_X)
+- rotary-encoder,noaxis: Report e.g. key events instead of axis events.
+  Event codes must be specified by code-cw and code-ccw and the event
+  type by linux,event-type.
 - rotary-encoder,steps: Number of steps in a full turnaround of the
   encoder. Only relevant for absolute axis. Defaults to 24 which is a
   typical value for such devices.
@@ -22,6 +25,10 @@ Optional properties:
 - wakeup-source: Boolean, rotary encoder can wake up the system.
 - rotary-encoder,encoding: String, the method used to encode steps.
   Supported are "gray" (the default and more common) and "binary".
+- linux,code-cw: Event code emitted for every step clockwise.
+- linux,code-ccw: Event code emitted on counter clockwise rotation per step.
+- linux,event-type: Event type for code-cw and code-ccw.
+  Defaults to (KEY_EV)
 
 Deprecated properties:
 - rotary-encoder,half-period: Makes the driver work on half-period mode.
@@ -47,4 +54,13 @@ Example:
 			rotary-encoder,steps = <24>;
 			rotary-encoder,encoding = "binary";
 			rotary-encoder,rollover;
+		};
+
+		rotary@2 {
+			compatible = "rotary-encoder";
+			gpios = <&gpio5 30 0>, <&gpio5 31 0>;
+			rotary-encoder,noaxis;
+			linux,code-cw = <103>; /* DOWN */
+			linux,code-ccw = <108>; /* UP */
+			linux,event-type = <KEY_EV>;
 		};

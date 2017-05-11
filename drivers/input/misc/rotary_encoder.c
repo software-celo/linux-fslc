@@ -44,6 +44,11 @@ struct rotary_encoder {
 	bool rollover;
 	enum rotary_encoder_encoding encoding;
 
+	bool noaxis;
+	unsigned int event_type;
+	unsigned int code_cw;
+	unsigned int code_ccw;
+
 	unsigned int pos;
 
 	struct gpio_descs *gpios;
@@ -76,6 +81,16 @@ static unsigned int rotary_encoder_get_state(struct rotary_encoder *encoder)
 
 static void rotary_encoder_report_event(struct rotary_encoder *encoder)
 {
+	unsigned int keycode = encoder->dir < 0 ? encoder->code_cw :
+						  encoder->code_ccw;
+	if (encoder->noaxis) {
+		input_event(encoder->input, encoder->event_type,
+				 keycode, 1);
+		input_event(encoder->input, encoder->event_type,
+				 keycode, 0);
+		goto out;
+	}
+
 	if (encoder->relative_axis) {
 		input_report_rel(encoder->input,
 				 encoder->axis, encoder->dir);
@@ -101,6 +116,7 @@ static void rotary_encoder_report_event(struct rotary_encoder *encoder)
 		input_report_abs(encoder->input, encoder->axis, encoder->pos);
 	}
 
+out:
 	input_sync(encoder->input);
 }
 
@@ -234,6 +250,20 @@ static int rotary_encoder_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 
+	encoder->noaxis = device_property_read_bool(dev,
+						    "rotary-encoder,noaxis");
+	if (encoder->noaxis) {
+		if (device_property_read_u32(dev, "linux,code-cw",
+					     &encoder->code_cw))
+			encoder->code_cw = KEY_DOWN;
+		if (device_property_read_u32(dev, "linux,code-ccw",
+					     &encoder->code_ccw))
+			encoder->code_ccw = KEY_UP;
+		if (device_property_read_u32(dev, "linux,event-type",
+					     &encoder->event_type))
+			encoder->event_type = EV_KEY;
+	}
+
 	device_property_read_u32(dev, "linux,axis", &encoder->axis);
 	encoder->relative_axis =
 		device_property_read_bool(dev, "rotary-encoder,relative-axis");
@@ -258,11 +288,18 @@ static int rotary_encoder_probe(struct platform_device *pdev)
 	input->id.bustype = BUS_HOST;
 	input->dev.parent = dev;
 
-	if (encoder->relative_axis)
-		input_set_capability(input, EV_REL, encoder->axis);
-	else
-		input_set_abs_params(input,
-				     encoder->axis, 0, encoder->steps, 0, 1);
+	if (encoder->noaxis) {
+		input_set_capability(input, encoder->event_type,
+				     encoder->code_cw);
+		input_set_capability(input, encoder->event_type,
+				     encoder->code_ccw);
+	} else {
+		if (encoder->relative_axis)
+			input_set_capability(input, EV_REL, encoder->axis);
+		else
+			input_set_abs_params(input, encoder->axis, 0,
+					     encoder->steps, 0, 1);
+	}
 
 	switch (steps_per_period >> (encoder->gpios->ndescs - 2)) {
 	case 4:
