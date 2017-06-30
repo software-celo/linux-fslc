@@ -11,11 +11,11 @@
 /dts-v1/;
 
 #include "imx6dl.dtsi"
-#include "imx6qdl-pixi.dtsi"
+#include "imx6qdl-pixi-cx.dtsi"
 
 / {
-	model = "Christ i.MX6 DualLite PIXI Board";
-	compatible = "ces,imx6dl-pixi", "fsl,imx6dl";
+	model = "Christ i.MX6 DualLite PIXI Board 1GB RAM";
+	compatible = "ces,imx6dl-pixi-cdlx", "fsl,imx6dl";
 };
 
 &ldb {
