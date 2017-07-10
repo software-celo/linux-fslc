@@ -3379,6 +3379,9 @@ fec_get_reset_phy(struct platform_device *pdev, int *msec, int *phy_reset)
 		return err;
 	}
 
+	msleep(*msec);
+	gpio_set_value(*phy_reset, 1);
+
 	return 0;
 }
 
