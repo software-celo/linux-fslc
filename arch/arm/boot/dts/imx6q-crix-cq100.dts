@@ -15,11 +15,11 @@
 /dts-v1/;
 
 #include "imx6q.dtsi"
-#include "imx6qdl-crix.dtsi"
+#include "imx6qdl-crix-cx.dtsi"
 
 / {
-	model = "Christ i.MX6 Quad CRIX Board";
-	compatible = "ces,imx6q-christ", "fsl,imx6q";
+	model = "Christ i.MX6 Quad CRIX Board 1GB RAM";
+	compatible = "ces,imx6q-crix-cqx", "fsl,imx6q";
 };
 
 &ldb {

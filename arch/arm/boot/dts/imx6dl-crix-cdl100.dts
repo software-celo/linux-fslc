@@ -11,11 +11,11 @@
 /dts-v1/;
 
 #include "imx6dl.dtsi"
-#include "imx6qdl-crix.dtsi"
+#include "imx6qdl-crix-cx.dtsi"
 
 / {
-	model = "Christ i.MX6 DualLite CRIX Board";
-	compatible = "ces,imx6dl-christ", "fsl,imx6dl";
+	model = "Christ i.MX6 DualLite CRIX Board 1GB RAM";
+	compatible = "ces,imx6dl-crix-cdlx", "fsl,imx6dl";
 };
 
 &ldb {
