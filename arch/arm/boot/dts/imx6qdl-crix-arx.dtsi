@@ -257,6 +257,7 @@
 
 &iomuxc {
 	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_gpios>;
 
 	enet1 {
 		pinctrl_enet: enetgrp {
