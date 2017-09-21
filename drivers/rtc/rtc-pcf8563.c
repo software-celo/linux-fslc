@@ -204,6 +204,7 @@ static int pcf8563_get_datetime(struct i2c_client *client, struct rtc_time *tm)
 		pcf8563->voltage_low = 1;
 		dev_info(&client->dev,
 			"low voltage detected, date/time is not reliable.\n");
+		return -EINVAL;
 	}
 
 	dev_dbg(&client->dev,
@@ -237,6 +238,11 @@ static int pcf8563_get_datetime(struct i2c_client *client, struct rtc_time *tm)
 	/* the clock can give out invalid datetime, but we cannot return
 	 * -EINVAL otherwise hwclock will refuse to set the time on bootup.
 	 */
+
+	/* Ignore this and returm -EINVAL on battery_low as the system might
+	 * lock up in scenarios where time later than 2038-01-19 03:14:07 is
+	 * reported. Keep it this way until the Y2K38 bug is resolved.
+	*/
 	if (rtc_valid_tm(tm) < 0)
 		dev_err(&client->dev, "retrieved date/time is not valid.\n");
 
