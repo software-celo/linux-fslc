@@ -898,9 +898,11 @@ static void __init imx6q_clocks_init(struct device_node *ccm_node)
 	}
 
 	/*Set enet_ref clock to 125M to supply for RGMII tx_clk */
-	/*In case of imx6dl-pixi use 50M */
+	/*In case of pixi and blix use 50M */
 	if ((of_machine_is_compatible("ces,imx6dl-pixi-cdlx") ||
-		of_machine_is_compatible("ces,imx6q-pixi-cqx")))
+		of_machine_is_compatible("ces,imx6q-pixi-cqx") ||
+		of_machine_is_compatible("ces,imx6dl-blix-bdlx") ||
+		of_machine_is_compatible("ces,imx6q-blix-bqx")))
 		clk_set_rate(clk[IMX6QDL_CLK_ENET_REF], 50000000);
 	else
 		clk_set_rate(clk[IMX6QDL_CLK_ENET_REF], 125000000);
