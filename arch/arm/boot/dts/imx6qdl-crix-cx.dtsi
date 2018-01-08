@@ -231,6 +231,15 @@
 
 &iomuxc {
 	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_powerfail>;
+
+	powerfail_gpio {
+		pinctrl_powerfail: powerfailgrp {
+			fsl,pins = <
+				MX6QDL_PAD_GPIO_9__GPIO1_IO09		0x130b0
+			>;
+		};
+	};
 
 	ecspi1 {
 		pinctrl_ecspi1: ecspi1grp {
