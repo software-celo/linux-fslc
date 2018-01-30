@@ -306,7 +306,7 @@
 	touch_controller: ar1021@4d {
 		compatible = "microchip,ar1021-i2c";
 		reg = <0x4d>;
-		interrupts = <8 IRQ_TYPE_LEVEL_HIGH>;
+		interrupts = <7 IRQ_TYPE_LEVEL_HIGH>;
 		interrupt-parent = <&gpio6>;
 	};
 
