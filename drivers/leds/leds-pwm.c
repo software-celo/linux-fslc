@@ -90,7 +90,7 @@ static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
 	led_data->active_low = led->active_low;
 	led_data->cdev.name = led->name;
 	led_data->cdev.default_trigger = led->default_trigger;
-	led_data->cdev.brightness = LED_OFF;
+	led_data->cdev.brightness = led->initial_brightness;
 	led_data->cdev.max_brightness = led->max_brightness;
 	led_data->cdev.flags = LED_CORE_SUSPENDRESUME;
 
@@ -149,6 +149,9 @@ static int led_pwm_create_of(struct device *dev, struct led_pwm_priv *priv)
 		led.active_low = of_property_read_bool(child, "active-low");
 		of_property_read_u32(child, "max-brightness",
 				     &led.max_brightness);
+		if (of_property_read_u32(child, "initial-brightness",
+					 &led.initial_brightness))
+			led.initial_brightness = LED_OFF;
 
 		ret = led_pwm_add(dev, priv, &led, child);
 		if (ret) {

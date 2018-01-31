@@ -13,6 +13,8 @@ LED sub-node properties:
   For the pwms and pwm-names property please refer to:
   Documentation/devicetree/bindings/pwm/pwm.txt
 - max-brightness : Maximum brightness possible for the LED
+- initial-brightness : Initial brightness at PWM initialisation
+  Defaults to 0
 - active-low : (optional) For PWMs where the LED is wired to supply
   rather than ground.
 - label :  (optional)
@@ -46,5 +48,6 @@ pwmleds {
 		label = "omap4:green:chrg";
 		pwms = <&twl_pwmled 0 7812500>;
 		max-brightness = <255>;
+		initial-brightness = <120>;
 	};
 };

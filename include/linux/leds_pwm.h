@@ -8,10 +8,11 @@
 struct led_pwm {
 	const char	*name;
 	const char	*default_trigger;
-	unsigned	pwm_id __deprecated;
-	u8 		active_low;
-	unsigned 	max_brightness;
-	unsigned	pwm_period_ns;
+	unsigned int	pwm_id __deprecated;
+	u8		active_low;
+	unsigned int	max_brightness;
+	unsigned int	initial_brightness;
+	unsigned int	pwm_period_ns;
 };
 
 struct led_pwm_platform_data {
