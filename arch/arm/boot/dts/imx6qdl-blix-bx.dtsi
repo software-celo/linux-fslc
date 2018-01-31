@@ -128,6 +128,7 @@
 			label = "blix:status:red";
 			pwms = <&pwm2 0 50000>;
 			max-brightness = <100>;
+			initial-brightness = <0>;
 			active-low;
 		};
 
@@ -135,6 +136,7 @@
 			label = "blix:status:green";
 			pwms = <&pwm3 0 50000>;
 			max-brightness = <100>;
+			initial-brightness = <0>;
 			active-low;
 		};
 
@@ -142,6 +144,7 @@
 			label = "blix:status:blue";
 			pwms = <&pwm4 0 50000>;
 			max-brightness = <100>;
+			initial-brightness = <0>;
 			active-low;
 		};
 
