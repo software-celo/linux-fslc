@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Christ Electronic Systems GmbH
+ * Copyright (C) 2018 Christ Electronic Systems GmbH
  * Peter Fink <pfink@christ-es.de>
  * Copyright (C) 2013-2015 Freescale Semiconductor, Inc.
  *
@@ -14,16 +14,6 @@
 #include "imx6qdl-blix-bx.dtsi"
 
 / {
-	model = "Christ i.MX6 DualLite BLIX Board 1GB RAM";
+	model = "Christ i.MX6 DualLite BLIX-BDLX00";
 	compatible = "ces,imx6dl-blix-bdlx", "fsl,imx6dl";
-};
-
-&ldb {
-	lvds-channel@0 {
-		crtc = "ipu1-di0";
-	};
-
-	lvds-channel@1 {
-		crtc = "ipu1-di1";
-	};
 };

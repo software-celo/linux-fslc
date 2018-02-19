@@ -17,10 +17,21 @@
 
 / {
 	aliases {
-		mxcfb0 = &mxcfb1;
-		mxcfb1 = &mxcfb2;
-		mxcfb2 = &mxcfb3;
-		mxcfb3 = &mxcfb4;
+		mxcfb0 = &fb_lvds;
+		mxcfb1 = &fb_hdmi;
+		mxcfb2 = &fb_lcd;
+		mxcfb3 = &fb_lvds2;
+		fb_hdmi = &fb_hdmi;
+		fb_lcd = &fb_lcd;
+		fb_lvds = &fb_lvds;
+		fb_lvds2 = &fb_lvds2;
+		lcd = &lcd;
+		ldb = &ldb;
+		backlight_lvds = &backlight;
+		backlight_lcd = &backlight;
+		backlight_lvds2 = &backlight;
+		t_lvds = &t_lvds;
+		t_lvds2 = &t_lvds2;
 	};
 
 	chosen {
@@ -59,17 +70,17 @@
 		};
 	};
 
-	mxcfb1: fb@0 {
+	fb_lvds: fb@0 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "ldb";
 		interface_pix_fmt = "RGB24";
 		default_bpp = <32>;
 		int_clk = <0>;
 		late_init = <0>;
-		status = "okay";
+		status = "disabled";
 	};
 
-	mxcfb2: fb@1 {
+	fb_hdmi: fb@1 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "hdmi";
 		interface_pix_fmt = "RGB24";
@@ -80,7 +91,7 @@
 		status = "okay";
 	};
 
-	mxcfb3: fb@2 {
+	fb_lcd: fb@2 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "lcd";
 		interface_pix_fmt = "RGB565";
@@ -91,7 +102,7 @@
 		status = "disabled";
 	};
 
-	mxcfb4: fb@3 {
+	fb_lvds2: fb@3 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "ldb";
 		interface_pix_fmt = "RGB666";
@@ -101,7 +112,7 @@
 		status = "disabled";
 	};
 
-	lcd@0 {
+	lcd: lcd@0 {
 		compatible = "fsl,lcd";
 		ipu_id = <0>;
 		disp_id = <0>;
@@ -109,7 +120,7 @@
 		status = "disabled";
 	};
 
-	backlight {
+	backlight: backlight {
 		compatible = "pwm-backlight";
 		pwms = <&pwm1 0 5000000>;
 		brightness-levels = <0 4 8 16 32 64 128 255>;
@@ -577,14 +588,14 @@
 	status = "okay";
 
 	lvds-channel@0 {
+		crtc = "ipu1-di0";
 		fsl,data-mapping = "spwg";
 		fsl,data-width = <24>;
 		status = "okay";
 		primary;
 
 		display-timings {
-			native-mode = <&timing0>;
-			timing0: LDB-WXGA {
+			t_lvds: t_lvds_default {
 				clock-frequency = <68930000>;
 				hactive = <1280>;
 				vactive = <800>;
@@ -602,13 +613,13 @@
 	};
 
 	lvds-channel@1 {
+		crtc = "ipu1-di1";
 		fsl,data-mapping = "spwg";
 		fsl,data-width = <18>;
-		status = "disabled";
+		status = "okay";
 
 		display-timings {
-			native-mode = <&timing1>;
-			timing1: hsd100pxn1 {
+			t_lvds2: t_lvds2_default {
 				clock-frequency = <65000000>;
 				hactive = <1024>;
 				vactive = <768>;
@@ -618,6 +629,9 @@
 				vfront-porch = <7>;
 				hsync-len = <60>;
 				vsync-len = <10>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				pixelclk-active = <0>;
 			};
 		};
 	};

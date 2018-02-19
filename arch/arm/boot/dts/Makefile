@@ -256,7 +256,7 @@ dtb-$(CONFIG_SOC_IMX53) += \
 dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-aristainetos_4.dtb \
 	imx6dl-aristainetos_7.dtb \
-	imx6dl-blix-bdl100.dtb \
+	imx6dl-blix-bdlx00.dtb \
 	imx6dl-crix-cdl100.dtb \
 	imx6dl-cubox-i.dtb \
 	imx6dl-dfi-fs700-m60.dtb \
@@ -290,7 +290,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-wandboard-revb1.dtb \
 	imx6q-arm2.dtb \
 	imx6q-arm2-hsic.dtb \
-	imx6q-blix-bq100.dtb \
+	imx6q-blix-bqx00.dtb \
 	imx6q-crix-cq100.dtb \
 	imx6q-crix-arq100.dtb \
 	imx6q-pop-arm2.dtb \
