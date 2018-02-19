@@ -292,7 +292,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-arm2-hsic.dtb \
 	imx6q-blix-bqx00.dtb \
 	imx6q-crix-cqx00.dtb \
-	imx6q-crix-arq100.dtb \
+	imx6q-crix-arqx00.dtb \
 	imx6q-pop-arm2.dtb \
 	imx6q-cm-fx6.dtb \
 	imx6q-cubox-i.dtb \
