@@ -263,6 +263,14 @@
 			};
 		};
 
+		pwm4 {
+			pinctrl_pwm4: pwm4grp {
+				fsl,pins = <
+					MX6QDL_PAD_SD1_CMD__PWM4_OUT		0x1b0b1
+				>;
+			};
+		};
+
 		uart1 {
 			pinctrl_uart1: uart1grp {
 				fsl,pins = <
@@ -399,6 +407,12 @@
 &pwm1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pwm1>;
+	status = "okay";
+};
+
+&pwm4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm4>;
 	status = "okay";
 };
 
