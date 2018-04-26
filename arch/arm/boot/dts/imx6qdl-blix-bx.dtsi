@@ -169,8 +169,9 @@
 		/* linux,axis = <1>;*/ /* REL_Y */
 		/* rotary-encoder,relative-axis; */
 		rotary-encoder,noaxis;
-		rotary-encoder,codeCCW = <108>; /* UP */
-		rotary-encoder,codeCW = <103>; /* DOWN */
+		rotary-encoder,codeCCW = <60>; /* KEY_F2 */
+		rotary-encoder,codeCW = <15>; /* KEY_TAB */
+		rotary-encoder,half-period;
 	};
 
 	gpio-keys {
