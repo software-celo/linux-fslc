@@ -30,9 +30,11 @@ struct pwm_bl_data {
 	unsigned int		period;
 	unsigned int		lth_brightness;
 	unsigned int		*levels;
-	bool			enabled;
+	bool			bl_enabled;
+	bool			dp_enabled;
 	struct regulator	*power_supply;
 	struct gpio_desc	*enable_gpio;
+	struct gpio_desc	*disp_enable_gpio;
 	unsigned int		scale;
 	bool			legacy;
 	int			(*notify)(struct device *,
@@ -42,13 +44,16 @@ struct pwm_bl_data {
 	int			(*check_fb)(struct device *, struct fb_info *);
 	void			(*exit)(struct device *);
 	char			fb_id[16];
+	struct timer_list power_on_timer;
 };
 
-static void pwm_backlight_power_on(struct pwm_bl_data *pb, int brightness)
+static void pwm_backlight_power_on(unsigned long data)
 {
+	struct pwm_bl_data *pb = (struct pwm_bl_data *) data;
+
 	int err;
 
-	if (pb->enabled)
+	if (pb->bl_enabled)
 		return;
 
 	err = regulator_enable(pb->power_supply);
@@ -59,22 +64,48 @@ static void pwm_backlight_power_on(struct pwm_bl_data *pb, int brightness)
 		gpiod_set_value(pb->enable_gpio, 1);
 
 	pwm_enable(pb->pwm);
-	pb->enabled = true;
+	pb->bl_enabled = true;
 }
 
 static void pwm_backlight_power_off(struct pwm_bl_data *pb)
 {
-	if (!pb->enabled)
+	if (timer_pending(&pb->power_on_timer))
+		del_timer_sync(&pb->power_on_timer);
+
+	if (pb->bl_enabled) {
+
+		pwm_config(pb->pwm, 0, pb->period);
+		pwm_disable(pb->pwm);
+
+		if (pb->enable_gpio)
+			gpiod_set_value(pb->enable_gpio, 0);
+
+		regulator_disable(pb->power_supply);
+		pb->bl_enabled = false;
+	}
+
+	if (!pb->dp_enabled || pb->bl_enabled)
 		return;
 
-	pwm_config(pb->pwm, 0, pb->period);
-	pwm_disable(pb->pwm);
+	if (pb->disp_enable_gpio)
+		gpiod_set_value(pb->disp_enable_gpio, 0);
 
-	if (pb->enable_gpio)
-		gpiod_set_value(pb->enable_gpio, 0);
+	pb->dp_enabled = false;
+}
 
-	regulator_disable(pb->power_supply);
-	pb->enabled = false;
+static void pwm_display_power_on(struct pwm_bl_data *pb, int brightness)
+{
+	if (!pb->bl_enabled)
+		mod_timer(&pb->power_on_timer,
+				jiffies + msecs_to_jiffies(150));
+
+	if (pb->dp_enabled)
+		return;
+
+	if (pb->disp_enable_gpio)
+		gpiod_set_value(pb->disp_enable_gpio, 1);
+
+	pb->dp_enabled = true;
 }
 
 static int compute_duty_cycle(struct pwm_bl_data *pb, int brightness)
@@ -107,7 +138,7 @@ static int pwm_backlight_update_status(struct backlight_device *bl)
 	if (brightness > 0) {
 		duty_cycle = compute_duty_cycle(pb, brightness);
 		pwm_config(pb->pwm, duty_cycle, pb->period);
-		pwm_backlight_power_on(pb, brightness);
+		pwm_display_power_on(pb, brightness);
 	} else
 		pwm_backlight_power_off(pb);
 
@@ -257,8 +288,12 @@ static int pwm_backlight_probe(struct platform_device *pdev)
 	pb->check_fb = data->check_fb;
 	pb->exit = data->exit;
 	pb->dev = &pdev->dev;
-	pb->enabled = false;
+	pb->bl_enabled = false;
+	pb->dp_enabled = false;
 	strcpy(pb->fb_id, data->fb_id);
+
+	setup_timer(&pb->power_on_timer, pwm_backlight_power_on, (unsigned long) pb);
+	add_timer(&pb->power_on_timer);
 
 	pb->enable_gpio = devm_gpiod_get_optional(&pdev->dev, "enable");
 	if (IS_ERR(pb->enable_gpio)) {
@@ -282,8 +317,22 @@ static int pwm_backlight_probe(struct platform_device *pdev)
 		pb->enable_gpio = gpio_to_desc(data->enable_gpio);
 	}
 
-	if (pb->enable_gpio)
-		gpiod_direction_output(pb->enable_gpio, 1);
+	pb->disp_enable_gpio = devm_gpiod_get_optional(&pdev->dev, "display-enable");
+	if (IS_ERR(pb->disp_enable_gpio)) {
+		ret = PTR_ERR(pb->disp_enable_gpio);
+		goto err_alloc;
+	}
+
+	if (pb->enable_gpio && pb->disp_enable_gpio) {
+		gpiod_direction_output(pb->enable_gpio, 0);
+		gpiod_direction_output(pb->disp_enable_gpio, 0);
+		pb->dp_enabled = false;
+		pb->bl_enabled = false;
+	}
+	else {
+		if (pb->enable_gpio)
+			gpiod_direction_output(pb->enable_gpio, 0);
+	}
 
 	pb->power_supply = devm_regulator_get(&pdev->dev, "power");
 	if (IS_ERR(pb->power_supply)) {
