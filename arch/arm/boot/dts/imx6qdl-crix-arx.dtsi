@@ -125,8 +125,9 @@
 		pwms = <&pwm1 0 200000>;
 		brightness-levels = <0 4 8 16 32 64 128 255>;
 		default-brightness-level = <7>;
-		pinctrl-0 = <&pinctrl_bkl_on>;
+		pinctrl-0 = <&pinctrl_bkl>;
 		enable-gpios = <&gpio3 13 0>;
+		display-enable-gpios = <&gpio1 30 0>;
 		status = "okay";
 	};
 
@@ -293,9 +294,10 @@
 	};
 
 	bkl {
-		pinctrl_bkl_on: gpio_bkl_on {
+		pinctrl_bkl: gpio_bkl {
 			fsl,pins = <
 				MX6QDL_PAD_EIM_DA13__GPIO3_IO13		0x130b0 /* PD */
+				MX6QDL_PAD_ENET_TXD0__GPIO1_IO30	0x130b0 /* PD */
 			>;
 		};
 	};
