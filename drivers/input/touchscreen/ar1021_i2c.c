@@ -101,9 +101,9 @@ static int ar1021_i2c_probe(struct i2c_client *client,
 	input->open = ar1021_i2c_open;
 	input->close = ar1021_i2c_close;
 
-	input_set_capability(input, EV_KEY, BTN_TOUCH);
-	input_set_capability(input, EV_ABS, ABS_X);
-	input_set_capability(input, EV_ABS, ABS_Y);
+	input->evbit[0] = BIT_MASK(EV_KEY) | BIT_MASK(EV_ABS);
+	input->keybit[BIT_WORD(BTN_TOUCH)] = BIT_MASK(BTN_TOUCH);
+
 	input_set_abs_params(input, ABS_X, 0, AR1021_MAX_X, 0, 0);
 	input_set_abs_params(input, ABS_Y, 0, AR1021_MAX_Y, 0, 0);
 
