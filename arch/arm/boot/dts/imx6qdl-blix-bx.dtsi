@@ -187,10 +187,10 @@
 		};
 
 		home_button {
-			label = "home_button";
+			label = "esc_button";
 			gpios = <&gpio4 15 GPIO_ACTIVE_LOW>;
 			debounce-interval = <10>;
-			linux,code = <102>; /* KEY_HOME */
+			linux,code = <1>; /* KEY_ESC */
 		};
 
 		menu_button {
@@ -201,10 +201,10 @@
 		};
 
 		esc_button {
-			label = "esc_button";
+			label = "home_button";
 			gpios = <&gpio4 8 GPIO_ACTIVE_LOW>;
 			debounce-interval = <10>;
-			linux,code = <1>; /* KEY_ESC */
+			linux,code = <102>; /* KEY_HOME */
 		};
 
 	};
