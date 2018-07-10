@@ -201,6 +201,7 @@
 
 &iomuxc {
 	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_gpio1>;
 
 		enet {
 			pinctrl_enet: enetgrp {
@@ -348,6 +349,19 @@
 				fsl,pins = <
 					MX6QDL_PAD_SD3_DAT0__FLEXCAN2_TX	0x1b0b0
 					MX6QDL_PAD_SD3_DAT1__FLEXCAN2_RX	0x1b0b0
+				>;
+			};
+		};
+
+		gpio1 {
+			pinctrl_gpio1: gpio1grp {
+				fsl,pins = <
+					MX6QDL_PAD_DISP0_DAT11__GPIO5_IO05	0x130b0 /* DOUT1 */
+					MX6QDL_PAD_DISP0_DAT12__GPIO5_IO06	0x130b0 /* DOUT2 */
+					MX6QDL_PAD_EIM_DA5__GPIO3_IO05		0x1b0b0 /* DIGIN1 */
+					MX6QDL_PAD_EIM_DA6__GPIO3_IO06		0x1b0b0 /* DIGIN2 */
+					MX6QDL_PAD_EIM_DA7__GPIO3_IO07		0x1b0b0 /* DIGIN3 */
+					MX6QDL_PAD_EIM_DA8__GPIO3_IO08		0x1b0b0 /* DIGIN4 */
 				>;
 			};
 		};
