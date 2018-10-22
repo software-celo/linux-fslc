@@ -69,6 +69,19 @@ modules.builtin
 /snap/
 
 #
+# Debian directory (dpkg-buildpackage)
+#
+/debian/build
+/debian/files
+/debian/tmp
+/debian/linux-*.debhelper*
+/debian/linux-*.substvars
+/debian/debhelper-build-stamp
+/debian/linux-headers-ces-4.1/
+/debian/linux-image-ces-4.1/
+/debian/linux-libc-dev-ces-4.1/
+
+#
 # tar directory (make tar*-pkg)
 #
 /tar-install/
