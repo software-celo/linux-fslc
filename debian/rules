@@ -4,7 +4,7 @@ PWD:=$(shell pwd)
 REL:=4.19-ces
 
 DEB_DIR:=$(PWD)/debian
-TMP_DIR:=$(DEB_DIR)/tmp
+TMP_DIR:=$(DEB_DIR)/linux-image-ces-4.19
 BUILD_DIR:=$(DEB_DIR)/build
 
 MOD_PATH:=$(TMP_DIR)
@@ -12,7 +12,7 @@ FW_PATH:=$(TMP_DIR)/lib/firmware
 KERNEL_PATH:=$(TMP_DIR)/boot
 HDR_PATH:=$(TMP_DIR)/usr
 KERNEL_HDR_PATH:=$(TMP_DIR)/usr/src/linux-headers-$(REL)
-DTBS_PATH:=$(TMP_DIR)/usr/lib/linux-image-$(REL)
+DTBS_PATH:=$(TMP_DIR)/boot
 
 ARCH:=arm
 SRCARCH:=$(ARCH)
@@ -46,16 +46,18 @@ override_dh_auto_configure:
 override_dh_auto_build:
 	rm -rf include/config
 	$(MAKE) $(MAKE_OPTS) zImage modules
-	(test arm = arm || test arm = arm64) && make -j`nproc` $(MAKE_OPTS) dtbs || true
+	$(MAKE) $(MAKE_OPTS) imx6q-wandboard.dtb
+
+override_dh_auto_test:
+	echo "autotest is disabled" # whitout this it leads into elbe build errors
 
 override_dh_auto_install:
 	mkdir -p $(MOD_PATH) $(FW_PATH) $(HDR_PATH) $(KERNEL_PATH) $(DTBS_PATH)
 	$(MAKE) $(MAKE_OPTS) zinstall
 	$(MAKE) $(MAKE_OPTS) INSTALL_MOD_STRIP=1 modules_install
-	$(MAKE) $(MAKE_OPTS) firmware_install
 	$(MAKE) $(MAKE_OPTS) headers_install
-	(test arm = arm || test arm = arm64) && make $(MAKE_OPTS) dtbs_install || true
-	# Build kernel header package
+	cp $(BUILD_DIR)/arch/$(SRCARCH)/boot/dts/*.dtb $(DTBS_PATH)
+# Build kernel header package
 	rm -f "$(TMP_DIR)/lib/modules/$(REL)/build" "$(TMP_DIR)/lib/modules/$(REL)/source"
 	find . -name Makefile\* -o -name Kconfig\* -o -name \*.pl > $(DEB_DIR)/hdrsrcfiles
 	find arch/*/include include scripts -type f >> $(DEB_DIR)/hdrsrcfiles
