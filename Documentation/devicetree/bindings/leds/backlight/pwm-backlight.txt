@@ -8,12 +8,19 @@ Required properties:
 Optional properties:
   - pwm-names: a list of names for the PWM devices specified in the
                "pwms" property (see PWM binding[0])
-  - enable-gpios: contains a single GPIO specifier for the GPIO which enables
-                  and disables the backlight (see GPIO binding[1])
-  - post-pwm-on-delay-ms: Delay in ms between setting an initial (non-zero) PWM
-                          and enabling the backlight using GPIO.
+  - enable-display-gpios: contains a single GPIO specifier for the GPIO which
+                          enables and disables the display logic.
+                          (see GPIO binding[1])
+  - enable-backlight-gpios: contains a single GPIO specifier for the GPIO which
+                            enables and disables the backlight.
+                            (see also GPIO binding[1])
+  - pwm-on-delay-ms: Delay in ms between enabling the display using the
+                     enable-display-gpio and setting an initial (non-zero) PWM
+                     (and activating the enable-backlight-gpio at the same
+                     time).
   - pwm-off-delay-ms: Delay in ms between disabling the backlight using GPIO
-                      and setting PWM value to 0.
+                      (and setting PWM value to 0 at the same time) and
+                      switching off the enable-display-gpio.
   - brightness-levels: Array of distinct brightness levels. Typically these
                        are in the range from 0 to 255, but any range starting at
                        0 will do. The actual brightness level (PWM duty cycle)
@@ -41,7 +48,8 @@ Example:
 		default-brightness-level = <6>;
 
 		power-supply = <&vdd_bl_reg>;
-		enable-gpios = <&gpio 58 0>;
+		enable-display-gpios = <&gpio 58 0>;
+		enable-backlight-gpios = <&gpio 60 0>;
 		post-pwm-on-delay-ms = <10>;
 		pwm-off-delay-ms = <10>;
 	};
@@ -57,5 +65,5 @@ Example using num-interpolation-steps:
 		default-brightness-level = <4096>;
 
 		power-supply = <&vdd_bl_reg>;
-		enable-gpios = <&gpio 58 0>;
+		enable-display-gpios = <&gpio 58 0>;
 	};
