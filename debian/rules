@@ -46,7 +46,8 @@ override_dh_auto_configure:
 override_dh_auto_build:
 	rm -rf include/config
 	$(MAKE) $(MAKE_OPTS) zImage modules
-	$(MAKE) $(MAKE_OPTS) imx6q-wandboard.dtb
+	$(MAKE) $(MAKE_OPTS) imx6dl-pixi-cdlx00.dtb
+	$(MAKE) $(MAKE_OPTS) imx6q-pixi-cqx00.dtb
 
 override_dh_auto_test:
 	echo "autotest is disabled" # whitout this it leads into elbe build errors
