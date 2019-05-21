@@ -1,7 +1,7 @@
 Source: linux-ces-4.19
 Section: kernel
 Priority: optional
-Maintainer: Jan Willeke <jan.willeke@linutronix.de>
+Maintainer: Peter Fink <pfink@christ-es.de>
 Build-Depends: debhelper (>= 9), bc, libelf-dev, bison, flex, kmod, libssl-dev, lzop
 Standards-Version: 3.8.4
 Homepage: http://www.kernel.org/
