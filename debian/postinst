@@ -6,7 +6,10 @@ set -e
 export DEB_MAINT_PARAMS="$*"
 
 # Tell initramfs builder whether it's wanted
-export INITRD=Yes
+export INITRD=No
+
+# Tell ces-install whether it's wanted
+export CES_INSTALL=Yes
 
 test -d /etc/kernel/postinst.d && run-parts --arg="4.19-ces" --arg="/boot/vmlinuz-4.19-ces" /etc/kernel/postinst.d
 exit 0
