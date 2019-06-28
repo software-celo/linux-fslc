@@ -653,6 +653,8 @@ static const struct rtc_class_ops ds13xx_rtc_ops = {
 #define RX8130_REG_FLAG_AF		BIT(3)
 #define RX8130_REG_CONTROL0		0x0e
 #define RX8130_REG_CONTROL0_AIE		BIT(3)
+#define RX8130_REG_CONTROL1		0x0f
+#define RX8130_REG_CONTROL1_INIEN	BIT(4)
 
 static irqreturn_t rx8130_irq(int irq, void *dev_id)
 {
@@ -1563,6 +1565,11 @@ static int ds1307_probe(struct i2c_client *client,
 			regmap_write(ds1307->regmap,
 				     DS1307_REG_HOUR << 4 | 0x08, hour);
 		}
+		break;
+	case rx_8130:
+		/* make sure that the backup battery is enabled */
+		regmap_write(ds1307->regmap, chip->offset + RX8130_REG_CONTROL1,
+			     RX8130_REG_CONTROL1_INIEN);
 		break;
 	default:
 		break;
