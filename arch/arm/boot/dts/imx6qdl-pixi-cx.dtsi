@@ -19,6 +19,13 @@
 
 / {
 
+	aliases {
+		backlight_lvds = &backlight;
+		fb_lvds = &lvds_panel;
+		t_lvds = "/panel/panel-timing";
+		ldb = &ldb;
+	};
+
 	chosen {
 		stdout-path = &uart1;
 	};
@@ -55,9 +62,28 @@
 		status = "okay";
 	};
 
-	panel {
-		compatible = "ampire,am800480r3tmqwa1h";
+	lvds_panel: panel {
+		compatible = "christ,c-wvga", "panel-lvds";
 		backlight = <&backlight>;
+
+		width-mm = <152>;
+		height-mm = <91>;
+
+		data-mapping = "jeida-18";
+
+		panel-timing {
+			/* 800x480 @59Hz */
+			clock-frequency = <59476342>;
+			hactive = <800>;
+			vactive = <480>;
+			hsync-len = <72>;
+			hfront-porch = <24>;
+			hback-porch = <96>;
+			vsync-len = <7>;
+			vfront-porch = <10>;
+			vback-porch = <15>;
+
+		};
 
 		port {
 			panel_in: endpoint {
@@ -70,8 +96,8 @@
 &clks {
 	assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>,
 			  <&clks IMX6QDL_CLK_LDB_DI1_SEL>;
-	assigned-clock-parents = <&clks IMX6QDL_CLK_PLL3_USB_OTG>,
-				 <&clks IMX6QDL_CLK_PLL3_USB_OTG>;
+	assigned-clock-parents = <&clks IMX6QDL_CLK_PLL5_VIDEO>,
+				 <&clks IMX6QDL_CLK_PLL5_VIDEO>;
 };
 
 &fec {
