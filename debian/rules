@@ -41,7 +41,7 @@ override_dh_auto_clean:
 
 override_dh_auto_configure:
 	mkdir -p debian/build
-	$(MAKE) $(MAKE_OPTS) imx_v6_v7_defconfig
+	$(MAKE) $(MAKE_OPTS) imx6_ces_defconfig
 
 override_dh_auto_build:
 	rm -rf include/config
