@@ -1,10 +1,10 @@
 #!/usr/bin/make -f
 
 PWD:=$(shell pwd)
-REL:=4.19-ces
+REL:=4.19.17-ces
 
 DEB_DIR:=$(PWD)/debian
-TMP_DIR:=$(DEB_DIR)/linux-image-ces-4.19
+TMP_DIR:=$(DEB_DIR)/linux-image-ces
 BUILD_DIR:=$(DEB_DIR)/build
 
 MOD_PATH:=$(TMP_DIR)

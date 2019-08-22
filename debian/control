@@ -1,4 +1,4 @@
-Source: linux-ces-4.19
+Source: linux-ces
 Section: kernel
 Priority: optional
 Maintainer: Peter Fink <pfink@christ-es.de>
@@ -6,19 +6,20 @@ Build-Depends: debhelper (>= 9), bc, libelf-dev, bison, flex, kmod, libssl-dev, 
 Standards-Version: 3.8.4
 Homepage: http://www.kernel.org/
 
-Package: linux-image-ces-4.19
+Package: linux-image-ces
 Depends: kmod | module-init-tools, linux-base (>= 3~), debconf (>= 0.5) | debconf-2.0, initramfs-tools (>= 0.99~) | linux-initramfs-tool, busybox
 Pre-Depends: debconf | debconf-2.0
 Provides: linux-image, linux-image-2.6
 Architecture: armhf
-Description: Linux kernel, version 4.19 ces
+Description: Linux kernel, version 4.19.17-ces
  This package contains the Linux kernel, modules and corresponding other
  files
 
 
-Package: linux-libc-dev-ces-4.19
-Provides: linux-libc-dev, linux-kernel-headers, linux-headers-2.6
-Replaces: linux-libc-dev
+Package: linux-libc-dev
+Provides: linux-kernel-headers, linux-headers-2.6
+Conflicts: linux-kernel-headers, linux-headers-2.6
+Replaces: linux-kernel-headers, linux-headers-2.6
 Architecture: armhf
 Description: Linux support headers for userspace development
  This package provides userspaces headers from the Linux kernel. These headers
