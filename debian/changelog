@@ -1,3 +1,11 @@
+linux-ces (4.19.17-5) stable; urgency=medium
+
+  [ Peter Fink ]
+  * ARM: dts: pixi-cx: move lan8720a nRST to ethphy node
+  * debian: update changelog
+
+ -- Peter Fink <pfink@christ-es.de>  Thu, 29 Aug 2019 11:18:28 +0100
+
 linux-ces (4.19.17-4) stable; urgency=medium
 
   [ Peter Fink ]
@@ -31,7 +39,7 @@ linux-ces (4.19.17-2) stable; urgency=medium
   * ARM: dts: pixi-cx: add initial devicetrees
 
   [ Baurzhan Ismagulov ]
-  * ARM: dts: pixi-cx: Disable DMA for ttymxc0 
+  * ARM: dts: pixi-cx: Disable DMA for ttymxc0
 
   [ Peter Fink ]
   * ARM: dts: crix-cx: add devicetrees
