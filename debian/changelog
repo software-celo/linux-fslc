@@ -1,3 +1,11 @@
+linux-ces (4.19.17-6) stable; urgency=medium
+
+  [ Peter Fink ]
+  * debian: rules: add crix and 4cbox dtbs to package
+  * debian: update changelog
+
+ -- Peter Fink <pfink@christ-es.de>  Mon, 2 Sep 2019 10:01:56 +0100
+
 linux-ces (4.19.17-5) stable; urgency=medium
 
   [ Peter Fink ]
