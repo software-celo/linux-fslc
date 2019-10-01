@@ -439,6 +439,10 @@ imx6qdl-pixi {
 	status = "disabled";
 };
 
+&snvs_poweroff {
+	status = "okay";
+};
+
 &can1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_flexcan1_mcb>;
