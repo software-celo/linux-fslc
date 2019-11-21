@@ -103,6 +103,18 @@
 			};
 		};
 	};
+
+	sound {
+		compatible = "fsl,imx6qdl-crix-arx-sgtl5000",
+			     "fsl,imx-audio-sgtl5000";
+		model = "imx6q-crix-arx-sgtl5000";
+		ssi-controller = <&ssi2>;
+		audio-codec = <&codec>;
+		audio-routing =
+			"Ext Spk", "LINE_OUT";
+		mux-int-port = <2>;
+		mux-ext-port = <3>;
+	};
 };
 
 &clks {
