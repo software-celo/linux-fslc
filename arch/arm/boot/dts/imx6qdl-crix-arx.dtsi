@@ -59,6 +59,14 @@
 			regulator-max-microvolt = <3300000>;
 			regulator-always-on;
 		};
+
+		reg_1v3: regulator@3 {
+			compatible = "regulator-fixed";
+			regulator-name = "1P3V";
+			regulator-min-microvolt = <1300000>;
+			regulator-max-microvolt = <1300000>;
+			regulator-always-on;
+		};
 	};
 
 	backlight: backlight {
@@ -186,7 +194,7 @@
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		clocks = <&clks 201>;
-		VDDD-supply = <&reg_3v3>;
+		VDDD-supply = <&reg_1v3>;
 		VDDA-supply = <&reg_3v3>;
 		VDDIO-supply = <&reg_3v3>;
 	};
