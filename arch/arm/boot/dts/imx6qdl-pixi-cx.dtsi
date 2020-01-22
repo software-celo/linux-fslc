@@ -115,7 +115,7 @@
 		#size-cells = <0>;
 
 		ethphy: ethernet-phy@1 {
-			compatible = "ethernet-phy-id0007.C0F1 , ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-id0007.c0f1", "ethernet-phy-ieee802.3-c22";
 			smsc,disable-energy-detect;
 			reg = <1>;
 			max-speed = <100>;
