@@ -161,7 +161,7 @@
 		#size-cells = <0>;
 
 		ethphy: ethernet-phy@0 {
-			compatible = "ethernet-phy-id0022.1622 , ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-id0022.1622", "ethernet-phy-ieee802.3-c22";
 			reg = <0>;
 			max-speed = <1000>;
 			clock-frequency = <125000000>;
