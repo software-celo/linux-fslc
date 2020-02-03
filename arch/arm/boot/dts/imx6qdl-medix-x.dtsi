@@ -112,9 +112,9 @@
 	};
 
 	sound {
-		compatible = "fsl,imx6qdl-crix-arx-sgtl5000",
+		compatible = "fsl,imx6qdl-medix-xx-sgtl5000",
 			     "fsl,imx-audio-sgtl5000";
-		model = "imx6q-crix-arx-sgtl5000";
+		model = "imx6q-medix-xx-sgtl5000";
 		ssi-controller = <&ssi2>;
 		audio-codec = <&codec>;
 		audio-routing =
@@ -123,14 +123,14 @@
 		mux-ext-port = <3>;
 	};
 
-	gpio_leds {
+	gpio-leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_front_leds>;
 
 		led-start {
 			label = "medix:start";
-			gpios = <&gpio3 8 0>;
+			gpios = <&gpio3 6 0>;
 			default-state = "off";
 		};
 
@@ -142,7 +142,7 @@
 
 		led-power {
 			label = "medix:power";
-			gpios = <&gpio3 6 0>;
+			gpios = <&gpio3 8 0>;
 			linux,default-trigger = "heartbeat";
 		};
 	};
@@ -185,7 +185,7 @@
 
 		start_button {
 			label = "start_button";
-			gpios = <&gpio3 5 GPIO_ACTIVE_LOW>;
+			gpios = <&gpio3 3 GPIO_ACTIVE_LOW>;
 			debounce-interval = <10>;
 			linux,code = <102>; /* KEY_HOME */
 		};
@@ -199,7 +199,7 @@
 
 		power_button {
 			label = "power_button";
-			gpios = <&gpio3 3 GPIO_ACTIVE_LOW>;
+			gpios = <&gpio3 5 GPIO_ACTIVE_LOW>;
 			debounce-interval = <10>;
 			linux,code = <113>; /* KEY_MUTE */
 		};
@@ -309,7 +309,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_gpios>;
 
-	imx6qdl-crix {
+	imx6qdl-medix {
 		pinctrl_enet: enetgrp {
 			fsl,pins = <
 				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
@@ -432,6 +432,13 @@
 			>;
 		};
 
+		pinctrl_uart4: uart4grp {
+			fsl,pins = <
+				MX6QDL_PAD_KEY_COL0__UART4_TX_DATA	0x1b0b1
+				MX6QDL_PAD_KEY_ROW0__UART4_RX_DATA	0x1b0b1
+			>;
+		};
+
 		pinctrl_usbotg: usbotggrp {
 			fsl,pins = <
 				MX6QDL_PAD_ENET_RX_ER__USB_OTG_ID	0x17059
@@ -535,6 +542,12 @@
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
+	status = "okay";
+};
+
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart4>;
 	status = "okay";
 };
 

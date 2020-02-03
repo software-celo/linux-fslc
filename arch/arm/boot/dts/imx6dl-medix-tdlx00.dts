@@ -15,14 +15,18 @@
 
 /dts-v1/;
 
-#include "imx6q.dtsi"
+#include "imx6dl.dtsi"
 #include "imx6qdl-medix-x.dtsi"
 
 / {
-	model = "Christ i.MX6 Quad MEDIX-RQX00";
-	compatible = "ces,imx6q-medix-rqx", "fsl,imx6q";
+	model = "Christ i.MX6 Dual Lite MEDIX-TDLX00";
+	compatible = "ces,imx6dl-medix-tdlx", "fsl,imx6dl";
 };
 
-&uart4 {
+&hdmi {
+	status = "disabled";
+};
+
+&i2c2 {
 	status = "disabled";
 };
