@@ -157,7 +157,6 @@
 			pwms = <&pwm2 0 50000>;
 			max-brightness = <100>;
 			initial-brightness = <0>;
-			active-low;
 		};
 
 		green {
@@ -165,7 +164,6 @@
 			pwms = <&pwm3 0 50000>;
 			max-brightness = <100>;
 			initial-brightness = <0>;
-			active-low;
 		};
 
 		blue {
@@ -173,7 +171,6 @@
 			pwms = <&pwm4 0 50000>;
 			max-brightness = <100>;
 			initial-brightness = <0>;
-			active-low;
 		};
 
 	};
