@@ -118,6 +118,7 @@
 		ssi-controller = <&ssi2>;
 		audio-codec = <&codec>;
 		audio-routing =
+			"MIC_IN", "Mic Jack",
 			"Ext Spk", "LINE_OUT";
 		mux-int-port = <2>;
 		mux-ext-port = <3>;
