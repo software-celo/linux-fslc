@@ -205,7 +205,7 @@
 		     &pinctrl_flexcan1_gpio_mcb
 		    >;
 
-imx6qdl-pixi {
+imx6qdl-4cbox {
 		pinctrl_enet: enetgrp {
 			fsl,pins = <
 				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
