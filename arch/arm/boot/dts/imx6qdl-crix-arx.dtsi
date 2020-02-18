@@ -240,7 +240,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_gpios>;
 
-	imx6qdl-crix {
+	imx6qdl-crix-arx {
 		pinctrl_enet: enetgrp {
 			fsl,pins = <
 				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
