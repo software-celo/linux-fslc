@@ -23,13 +23,6 @@
 	compatible = "ces,imx6q-medix-rqx", "fsl,imx6q";
 };
 
-&clks {
-        assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>,
-                          <&clks IMX6QDL_CLK_LDB_DI1_SEL>;
-        assigned-clock-parents = <&clks IMX6QDL_CLK_PLL3_USB_OTG>,
-                                 <&clks IMX6QDL_CLK_PLL3_USB_OTG>;
-};
-
 &uart4 {
 	status = "disabled";
 };
