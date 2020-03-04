@@ -16,6 +16,7 @@ struct platform_pwm_backlight_data {
 	unsigned int *levels;
 	unsigned int pwm_on_delay;
 	unsigned int pwm_off_delay;
+	unsigned int hold_off_delay;
 	/* TODO remove once all users are switched to gpiod_* API */
 	int dp_enable_gpio;
 	int bl_enable_gpio;

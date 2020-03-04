@@ -21,6 +21,10 @@ Optional properties:
   - pwm-off-delay-ms: Delay in ms between disabling the backlight using GPIO
                       (and setting PWM value to 0 at the same time) and
                       switching off the enable-display-gpio.
+  - display-hold-off-ms: Time in ms which the display enable gpio is forced off
+                         even if the backlight is switched on immediately after
+                         it has been turned off. This can be used if the
+                         display is not able to cope with fast on-off-on cycles.
   - brightness-levels: Array of distinct brightness levels. Typically these
                        are in the range from 0 to 255, but any range starting at
                        0 will do. The actual brightness level (PWM duty cycle)
@@ -52,6 +56,7 @@ Example:
 		enable-backlight-gpios = <&gpio 60 0>;
 		post-pwm-on-delay-ms = <10>;
 		pwm-off-delay-ms = <10>;
+		display-hold-off-ms = <20>;
 	};
 
 Example using num-interpolation-steps:

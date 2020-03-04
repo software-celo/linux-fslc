@@ -39,6 +39,7 @@ struct pwm_bl_data {
 	bool			legacy;
 	unsigned int		pwm_on_delay;
 	unsigned int		pwm_off_delay;
+	unsigned int		hold_off_delay;
 	int			(*notify)(struct device *,
 					  int brightness);
 	void			(*notify_after)(struct device *,
@@ -91,6 +92,9 @@ static void pwm_backlight_power_off(struct pwm_bl_data *pb)
 
 	regulator_disable(pb->power_supply);
 	pb->enabled = false;
+
+	if (pb->hold_off_delay)
+		msleep(pb->hold_off_delay);
 }
 
 static int compute_duty_cycle(struct pwm_bl_data *pb, int brightness)
@@ -388,6 +392,7 @@ static int pwm_backlight_parse_dt(struct device *dev,
 	of_property_read_u32(node, "pwm-on-delay-ms",
 			     &data->pwm_on_delay);
 	of_property_read_u32(node, "pwm-off-delay-ms", &data->pwm_off_delay);
+	of_property_read_u32(node, "display-hold-off-ms", &data->hold_off_delay);
 
 	data->dp_enable_gpio = -EINVAL;
 	data->bl_enable_gpio = -EINVAL;
@@ -493,6 +498,7 @@ static int pwm_backlight_probe(struct platform_device *pdev)
 	pb->enabled = false;
 	pb->pwm_on_delay = data->pwm_on_delay;
 	pb->pwm_off_delay = data->pwm_off_delay;
+	pb->hold_off_delay = data->hold_off_delay;
 
 	pb->dp_enable_gpio = devm_gpiod_get_optional(&pdev->dev,
 						  "display-enable", GPIOD_ASIS);
