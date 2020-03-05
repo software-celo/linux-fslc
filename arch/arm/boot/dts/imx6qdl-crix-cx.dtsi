@@ -61,6 +61,7 @@
 		default-brightness-level = <7>;
 		pinctrl-0 = <&pinctrl_bkl>;
 		enable-display-gpios = <&gpio3 13 0>;
+		display-hold-off-ms = <20>;
 		status = "okay";
 	};
 
