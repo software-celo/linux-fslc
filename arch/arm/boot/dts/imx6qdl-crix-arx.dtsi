@@ -79,6 +79,7 @@
 		display-enable-gpios = <&gpio3 13 0>;
 		pwm-on-delay-ms = <150>;
 		pwm-off-delay-ms = <50>;
+		display-hold-off-ms = <20>;
 		status = "okay";
 	};
 
