@@ -50,7 +50,8 @@ static void imx_imx_snvs_check_for_events(struct timer_list *t)
 	 * and make it dependent on our board
 	 */
 	if ((of_machine_is_compatible("ces,imx6dl-pixi-cdlx") ||
-		of_machine_is_compatible("ces,imx6q-pixi-cqx"))) {
+		of_machine_is_compatible("ces,imx6q-pixi-cqx") ||
+		of_machine_is_compatible("ces,imx6q-crix-arqx"))) {
 		state = 1;
 		input_event(input, EV_KEY, pdata->keycode, state);
 		input_sync(input);
