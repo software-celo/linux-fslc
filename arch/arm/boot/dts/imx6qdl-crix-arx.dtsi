@@ -424,6 +424,17 @@
 	status = "okay";
 };
 
+&snvs {
+	snvs-pwrkey@020cc000 {
+		compatible = "fsl,sec-v4.0-pwrkey";
+		regmap = <&snvs>;
+		interrupts = <GIC_SPI 4 IRQ_TYPE_LEVEL_HIGH>;
+		linux,keycode = <KEY_POWER>;
+		wakeup-source;
+		status = "okay";
+	};
+};
+
 &ssi2 {
 	fsl,mode = "i2s-slave";
 	status = "okay";
