@@ -389,6 +389,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-aristainetos_7.dtb \
 	imx6dl-aristainetos2_4.dtb \
 	imx6dl-aristainetos2_7.dtb \
+	imx6dl-blix-bdlx00.dtb \
 	imx6dl-colibri-eval-v3.dtb \
 	imx6dl-crix-cdlx00.dtb \
 	imx6dl-cubox-i.dtb \
@@ -453,6 +454,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-b450v3.dtb \
 	imx6q-b650v3.dtb \
 	imx6q-b850v3.dtb \
+	imx6q-blix-bqx00.dtb \
 	imx6q-cm-fx6.dtb \
 	imx6q-crix-cqx00.dtb \
 	imx6q-crix-arqx00.dtb \
