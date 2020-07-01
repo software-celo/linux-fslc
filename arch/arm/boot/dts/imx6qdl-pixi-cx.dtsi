@@ -24,6 +24,7 @@
 		fb_lvds = &lvds_panel;
 		t_lvds = "/panel/panel-timing";
 		ldb = &ldb;
+		ethernet1 = "/soc/aips-bus@2100000/usb@2184200/smsc_hub@1/asix_enet@1";
 	};
 
 	chosen {
@@ -390,6 +391,21 @@
 &usbh1 {
 	vbus-supply = <&reg_usb_h1_vbus>;
 	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	smsc_hub@1 {
+		compatible = "usb424,2514";
+		reg = <1>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		asix_enet@1 {
+			compatible = "usbb95,1790";
+			reg = <1>;
+			local-mac-address = [00 00 00 00 00 00];
+		};
+	};
 };
 
 &usbotg {
