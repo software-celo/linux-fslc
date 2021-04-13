@@ -139,8 +139,8 @@
 		/* linux,axis = <1>;*/ /* REL_Y */
 		/* rotary-encoder,relative-axis; */
 		rotary-encoder,noaxis;
-		rotary-encoder,codeCCW = <60>; /* KEY_F2 */
-		rotary-encoder,codeCW = <15>; /* KEY_TAB */
+		linux,code-ccw = <60>; /* KEY_F2 */
+		linux,code-cw = <15>; /* KEY_TAB */
 		rotary-encoder,half-period;
 	};
 
