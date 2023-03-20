@@ -467,6 +467,13 @@
 			>;
 		};
 
+		pinctrl_flexcan1: can1grp {
+			fsl,pins = <
+				MX6QDL_PAD_KEY_COL2__FLEXCAN1_TX	0x1b0b0
+				MX6QDL_PAD_KEY_ROW2__FLEXCAN1_RX	0x1b0b0
+			>;
+		};
+
 		pinctrl_flexcan2: can2grp {
 			fsl,pins = <
 				MX6QDL_PAD_SD3_DAT0__FLEXCAN2_TX	0x1b0b0
@@ -520,6 +527,13 @@
 	fsl,mode = "i2s-slave";
 	status = "okay";
 };
+
+&can1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_flexcan1>;
+	status = "disabled";
+};
+
 
 &can2 {
 	pinctrl-names = "default";
